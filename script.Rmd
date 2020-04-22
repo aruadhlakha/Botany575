@@ -1,0 +1,45 @@
+---
+title: "script.Rmd"
+output: html_document
+---
+
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(dplyr)
+```
+
+## R Markdown
+
+```{r read-transform-data, include = TRUE}
+data = read_csv("master 2.csv")
+```
+
+3. Correlation between GDP and population suicide rates? A follow-up question to that is, does GDP strongly relate to a certain age-group committing suicides?
+```{r GDP to population suicide rate}
+gdpToSuicideRate = data %>%
+  select(`suicides/100k pop`, `gdp_per_capita ($)`, age)
+
+ggplot(data = gdpToSuicideRate, aes(x = `gdp_per_capita ($)`, y = `suicides/100k pop`)) + geom_point() + geom_smooth(method = "lm") + ylab("Suicides per 100 thousand people") + xlab("GDB per capita") + ggtitle("Suicide counts vs GDP per capita")
+
+ggplot(data = gdpToSuicideRate, aes(x = `gdp_per_capita ($)`, y = `suicides/100k pop`)) + geom_point() + facet_wrap(~age) + geom_smooth(method = "lm") + ylab("Suicides per 100 thousand people") + xlab("GDB per capita") + ggtitle("Suicide counts vs GDP per capita separated by age")
+```
+While it appears that there are more cases of suicide when the gdp per capita is low, there is actually no effective correlation between the 2 variables. In terms of age, it seems that the suicide rate increases with age.
+
+
+6. What percentage of the population is affected by it?
+Was the rate extremely high or low during a period of time? Examine. 
+Does confounding possibly appear? Explain.
+
+```{r Percentage of the population affected}
+populationsByYear = data %>%
+  select(year, suicides_no, population) %>%
+  group_by(year) %>%
+  summarize(affected = sum(suicides_no),
+            pop = sum(population)) %>%
+  mutate(percent = 100 * affected / pop) %>%
+  select(year, percent)
+
+ggplot(data = populationsByYear, aes(x = year, y = percent)) + geom_point() + ylab("Percentage of world population affected") + xlab("Year") + ggtitle("Percentage vs. Year")
+```
+Examining the world population and suicide rate, it seems that in 2006, the suicide percentage peaked. We have consistently decreased our rate since then.
