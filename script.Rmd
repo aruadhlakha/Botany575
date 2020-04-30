@@ -23,19 +23,18 @@ ageAndSuicideRate = data %>%
   group_by(age, year) %>%
   summarize(TotalSuicideRate=sum(`suicides/100k pop`))
 
-ggplot(data = ageAndSuicideRate, aes(x = `year`, y = TotalSuicideRate, color=age)) + geom_point() + facet_wrap(~age) + geom_smooth(method = "lm", color='black') + ylab("Suicides per 100 thousand people") + xlab("Through the years") + ggtitle("Suicide rates vs Years, for different age groups")
+ggplot(data = ageAndSuicideRate, aes(x = `year`, y = TotalSuicideRate, color=age)) + geom_point() + facet_wrap(~age) + geom_smooth(method = "lm", color='black') + ylab("Suicides per 100 thousand people") + xlab("Through the years") + ggtitle("Suicide numbers vs Years, for different age groups")
 
 totalDeathsPerAge = ageAndSuicideRate %>%
   select(age, TotalSuicideRate) %>%
   group_by(age) %>%  
   summarize(TotalDeaths=sum(TotalSuicideRate)) %>%
-  mutate(Percentage=TotalDeaths/sum(TotalDeaths)*100)
+  mutate(Percentage=paste(as.character(round(TotalDeaths/sum(TotalDeaths)*100)) ,"%"))
 
-ggplot(totalDeathsPerAge, aes(x="", y=Percentage, fill=age)) +
-  geom_bar(stat="identity", width=1, color="white") +
-  coord_polar("y", start=0) +
-  theme_void() + 
-  ggtitle("Proportion of deaths/age group since 1987 to 2016")
+ggplot(totalDeathsPerAge, aes(x=age, y=Percentage)) +
+  geom_bar(stat="identity", width=1, color="white", fill = "light blue") +
+  ggtitle("Proportion of deaths/age group since 1987 to 2016") + geom_text(aes(label=Percentage), position=position_dodge(width=0.9), vjust=-0.25)
+
 ```
 Through observation, one can notice that people aged 75 years or older have the highest suicide rate and the rate decreases as we go down the age groups.
 
@@ -82,13 +81,12 @@ totalDeathsPerGeneration = generationAndSuicideRate %>%
   select(generation, TotalSuicideRate) %>%
   group_by(generation) %>%  
   summarize(TotalDeaths=sum(TotalSuicideRate)) %>%
-  mutate(Percentage=TotalDeaths/sum(TotalDeaths)*100)
+  mutate(Percentage=paste(as.character(round(TotalDeaths/sum(TotalDeaths)*100)),"%"))
 
-ggplot(totalDeathsPerGeneration, aes(x="", y=Percentage, fill=generation)) +
-  geom_bar(stat="identity", width=1, color="white") +
-  coord_polar("y", start=0) +
-  theme_void() + 
-  ggtitle("Proportion of deaths/generation since 1987 to 2016")
+ggplot(totalDeathsPerGeneration, aes(x=generation, y=Percentage)) +
+  geom_bar(stat="identity", width=1, color="white", fill = "light PINK") +
+  ggtitle("Proportion of deaths/generation since 1987 to 2016")  + geom_text(aes(label=Percentage), position=position_dodge(width=0.9), vjust=-0.25)
+
 
 ```
 As one can notice, the "Silent" generation was the one that saw most number of suicides across the globe. 
@@ -142,3 +140,4 @@ populationsByYear = data %>%
 ggplot(data = populationsByYear, aes(x = factor(year), y = percent)) + geom_point() + ylab("Percentage of world population affected") + xlab("Year") + ggtitle("Percentage vs. Year")  + theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 Examining the world population and suicide rate, it seems that in 2006, the suicide percentage peaked. We have consistently decreased our rate since then.
+
