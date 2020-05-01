@@ -39,7 +39,8 @@ library(dplyr)
 ```{r read-transform-data, include = TRUE, echo=FALSE}
 data = read_csv("master 2.csv")
 ```
-1. Does age affect the suicide rate?
+### 1. Does age affect the suicide rate?
+
 ```{r, echo=FALSE}
 ageAndSuicideRate = data %>% 
   select (country, year, age, `suicides/100k pop`) %>%
@@ -71,7 +72,7 @@ chisq.test(totalDeathsPerAge)
 ```
 Through observation, one can notice that people aged 75 years or older have the highest suicide rate and the rate decreases as we go down the age groups. For the chi-square test, we tested whether age and suicide rates are independent. Assuming alpha = 0.05, with a p-value = we cannot reject the null and conclude that there is a correlation between the age and suicide rate.
 
-2. Does sex affect the suicide rate?
+### 2. Does sex affect the suicide rate?
 ```{r, echo=FALSE}
 sexAndSuicideRate = data %>%
   select(sex, `suicides/100k pop`, year) %>%
@@ -93,7 +94,7 @@ chisq.test(sexAndSuicideRate)
 ```
 It appears that the suicide rate difference amongst men and females is positive. We find that this difference is positive in all cases. With a p-value of 1, we reject the null and conclude that there is no correlation between Sex and Suicide Rate.
 
-3. Correlation between GDP and population suicide rates? A follow-up question to that is, does GDP strongly relate to a certain age-group committing suicides?
+### 3. Correlation between GDP and population suicide rates? A follow-up question to that is, does GDP strongly relate to a certain age-group committing suicides?
 ```{r GDP to population suicide rate,  echo=FALSE}
 gdpToSuicideRate = data %>%
   select(`suicides/100k pop`, `gdp_per_capita ($)`, age)
@@ -109,7 +110,7 @@ chisq.test(gdpToSuicideRate)
 ```
 While it appears that there are more cases of suicide when the gdp per capita is low, there is actually no effective correlation between the 2 variables. In terms of age, it seems that the suicide rate increases with age. For the chi-squared test, assuming alpha = 0.05, with a p-value < 2.2 * 10^-16 < alpha, we cannot reject the null and conclude that there is a correlation between gdp and suicide rate.
 
-4. What is the role of generation in the rates we are examining?
+### 4. What is the role of generation in the rates we are examining?
 ```{r,  echo=FALSE}
 generationAndSuicideRate = data %>% 
   select (country, year, generation, `suicides/100k pop`) %>%
@@ -143,7 +144,7 @@ chisq.test(totalDeathsPerGeneration)
 ```
 As one can notice, the "Silent" generation was the one that saw most number of suicides across the globe. With a chi-square test, we have a p-value of 5.719 * 10^-07. Assuming alpha = 0.05, we cannot reject the null, and we conclude that there is a correlation between the Suicde rate and generation.
 
-5. Which country has the highest suicide rate, per age group, per generation, and through the years? Can it be related to any factor in specific. Answers may be present in the data or may require additional background research.
+### 5. Which country has the highest suicide rate, per age group, per generation, and through the years? Can it be related to any factor in specific. Answers may be present in the data or may require additional background research.
 ```{r,  echo=FALSE}
 ## suicide rate for countries per age group
 countryAndAge = data %>%
@@ -175,9 +176,7 @@ ggplot(countryAndYear, aes(fill = year, y = `suicides/100k pop`, x = country)) +
     theme(axis.text.x = element_text(angle = 90, hjust = 1))
 ```
 
-6. What percentage of the population is affected by it?
-Was the rate extremely high or low during a period of time? Examine. 
-Does confounding possibly appear? Explain.
+### 6. What percentage of the population is affected by it? Was the rate extremely high or low during a period of time? Examine. Does confounding possibly appear? Explain.
 
 ```{r Percentage of the population affected,  echo=FALSE}
 populationsByYear = data %>%
