@@ -70,7 +70,7 @@ totalDeathsPerAge = ageAndSuicideRate %>%
 
 chisq.test(totalDeathsPerAge)
 ```
-Through observation, one can notice that people aged 75 years or older have the highest suicide rate and the rate decreases as we go down the age groups. For the chi-square test, we tested whether age and suicide rates are independent. Assuming alpha = 0.05, with a p-value = we cannot reject the null and conclude that there is a correlation between the age and suicide rate.
+Through observation, one can notice that people aged 75 years or older have the highest suicide rate and the rate decreases as we go down the age groups. For the chi-square test, we tested whether age and suicide rates are independent. Assuming alpha = 0.05, with a p-value = 5.719e-07 we cannot reject the null and conclude that there is a correlation age and suicide rate.
 
 ### 2. Does sex affect the suicide rate?
 ```{r, echo=FALSE}
@@ -90,18 +90,17 @@ ggplot(data = sexAndSuicideRate) +
 sexAndSuicideRate = sexAndSuicideRate %>%
   select(male, female)
 
-chisq.test(sexAndSuicideRate)
 ```
-It appears that the suicide rate difference amongst men and females is positive. We find that this difference is positive in all cases. With a p-value of 1, we reject the null and conclude that there is no correlation between Sex and Suicide Rate.
+It appears that the suicide rate difference amongst men and females is positive. We find that this difference is positive in all cases. With a p-value of 1, we reject the null and conclude that there is no correlation between sex and Suicide Rate.
 
 ### 3. Correlation between GDP and population suicide rates? A follow-up question to that is, does GDP strongly relate to a certain age-group committing suicides?
 ```{r GDP to population suicide rate,  echo=FALSE}
 gdpToSuicideRate = data %>%
   select(`suicides/100k pop`, `gdp_per_capita ($)`, age)
 
-ggplot(data = gdpToSuicideRate, aes(x = `gdp_per_capita ($)`, y = `suicides/100k pop`)) + geom_point() + geom_smooth(method = "lm") + ylab("Suicides per 100 thousand people") + xlab("GDB per capita") + ggtitle("Suicide counts vs GDP per capita")
+ggplot(data = gdpToSuicideRate, aes(x = `gdp_per_capita ($)`, y = `suicides/100k pop`)) + geom_point()  + ylab("Suicides per 100 thousand people") + xlab("GDB per capita") + ggtitle("Suicide counts vs GDP per capita")
 
-ggplot(data = gdpToSuicideRate, aes(x = `gdp_per_capita ($)`, y = `suicides/100k pop`)) + geom_point() + facet_wrap(~age) + geom_smooth(method = "lm") + ylab("Suicides per 100 thousand people") + xlab("GDB per capita") + ggtitle("Suicide counts vs GDP per capita separated by age")
+ggplot(data = gdpToSuicideRate, aes(x = `gdp_per_capita ($)`, y = `suicides/100k pop`)) + geom_point() + facet_wrap(~age)  + ylab("Suicides per 100 thousand people") + xlab("GDB per capita") + ggtitle("Suicide counts vs GDP per capita separated by age")
 
 gdpToSuicideRate = gdpToSuicideRate %>%
   select(`suicides/100k pop`)
@@ -109,7 +108,7 @@ gdpToSuicideRate = gdpToSuicideRate %>%
 chisq.test(gdpToSuicideRate)
 ```
 While it appears that there are more cases of suicide when the gdp per capita is low, there is actually no effective correlation between the 2 variables. In terms of age, it seems that the suicide rate increases with age. For the chi-squared test, assuming alpha = 0.05, with a p-value < 2.2 * 10^-16 < alpha, we cannot reject the null and conclude that there is a correlation between gdp and suicide rate.
-
+ 
 ### 4. What is the role of generation in the rates we are examining?
 ```{r,  echo=FALSE}
 generationAndSuicideRate = data %>% 
@@ -194,16 +193,17 @@ populationsByYear = populationsByYear %>%
 
 chisq.test(populationsByYear)
 ```
-Examining the world population and suicide rate, it seems that in 1995, the suicide percentage peaked. We have consistently decreased our rate since then. In our chi-squared test, assuming alpha = 0.05, we have a p-value of 1 > alpha, so we cannot reject the null and thus conclude that there is no correlation.
+Examining the world population and suicide rate, it seems that in 1995, the suicide percentage peaked. We have consistently decreased our rate since then. In our chi-squared test, assuming alpha = 0.05, we have a p-value of 1 > alpha, so we can reject the null and thus conclude that there is no correlation.
 
 # **Conclusion:**
 Results thus far match our expectations in some cases, but differ drastically in others. When considering age as a factor, we find that people aged 75 and older peak the rate. The rate then starts to drop as we go further down the age groups. The elderly account for about 12% of the US population, yet we find a peak in this age group. The trend found is that the risk increases with age. With the expectation of suicide rates being higher among males than those in females, the analysis not only proved that, but also showed the vast differences in the numbers. The highest noted percentage difference between males and females is in the year 1995.  We have not found any correlation between gdp per capita and the suicide rate. The generation that peaked the suicide rates was the “Silent” generation (1928 to 1945). This was the generation that was raised during a period of war and economic depression, which can be a strong contributing factor for the rise. 2006 witnessed the most suicides and the rate has since consistently dropped. We also find that amongst the countries, Romania peaked the suicide rate. 
 
 # **References:**
-[1] who.int/news-room/fact-sheets/detail/suicide
-[2] United Nations Development Program. (2018). Human development index (HDI). Retrieved from http://hdr.undp.org/en/indicators/137506
-[3] World Bank. (2018). World development indicators: GDP (current US$) by country:1985 to 2016. Retrieved from http://databank.worldbank.org/data/source/world-development-indicators#
-[4] [Szamil]. (2017). Suicide in the Twenty-First Century [dataset]. Retrieved from https://www.kaggle.com/szamil/suicide-in-the-twenty-first-century/notebook
-[5] World Health Organization. (2018). Suicide prevention. Retrieved from http://www.who.int/mental_health/suicide-prevention/en/
+
+1. who.int/news-room/fact-sheets/detail/suicide
+2. United Nations Development Program. (2018). Human development index (HDI). Retrieved from http://hdr.undp.org/en/indicators/137506
+3. World Bank. (2018). World development indicators: GDP (current US$) by country:1985 to 2016. Retrieved from http://databank.worldbank.org/data/source/world-development-indicators#
+4. [Szamil]. (2017). Suicide in the Twenty-First Century [dataset]. Retrieved from https://www.kaggle.com/szamil/suicide-in-the-twenty-first-century/notebook
+5. World Health Organization. (2018). Suicide prevention. Retrieved from http://www.who.int/mental_health/suicide-prevention/en/
 
 
