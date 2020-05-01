@@ -91,7 +91,6 @@ sexAndSuicideRate = sexAndSuicideRate %>%
   select(male, female)
 
 ```
-It appears that the suicide rate difference amongst men and females is positive. We find that this difference is positive in all cases. With a p-value of 1, we reject the null and conclude that there is no correlation between sex and Suicide Rate.
 
 ### 3. Correlation between GDP and population suicide rates? A follow-up question to that is, does GDP strongly relate to a certain age-group committing suicides?
 ```{r GDP to population suicide rate,  echo=FALSE}
