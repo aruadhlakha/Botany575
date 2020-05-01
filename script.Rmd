@@ -7,7 +7,7 @@ output: html_document
 
 # **Introduction and background:**
 
-Suicides are tragedies that leave everlasting effects. They affect families and communities. According to the World Health Organisation, there are close to 800,000 people who commit suicide every year. It is an alarming, but preventable problem. With evidence for trends, we can find the more vulnerable groups and adapt targeted preventive measures to lower the rate. While the link has been higher between mental disorders and suicides historically, there are several other factors that play a role in setting these trends. The central aim is analyse who is more at risk, and under which categories the rates peak, as we compare and analyse the socio-economic information with suicide rates by year and country. 
+Suicides are tragedies that leave everlasting effects. They affect families and communities. According to the World Health Organisation, there are close to 800,000 people who commit suicide every year[1]. It is an alarming, but preventable problem. With evidence for trends, we can find the more vulnerable groups and adapt targeted preventive measures to lower the rate. While the link has been higher between mental disorders and suicides historically, there are several other factors that play a role in setting these trends. The central aim is analyse who is more at risk, and under which categories the rates peak, as we compare and analyse the socio-economic information with suicide rates by year and country. 
 
 This dataset, adapted from kaggle, showcases information of suicide rates by country, gdp per capita, age, sex, and generation. With this dataset, we have broken down our questions to analyse each factor of suicide rate and find any correlations. 
 
@@ -194,14 +194,16 @@ populationsByYear = populationsByYear %>%
 
 chisq.test(populationsByYear)
 ```
-Examining the world population and suicide rate, it seems that in 2006, the suicide percentage peaked. We have consistently decreased our rate since then. In our chi-squared test, assuming alpha = 0.05, we have a p-value of 1 > alpha, so we cannot reject the null and thus conclude that there is no correlation.
+Examining the world population and suicide rate, it seems that in 1995, the suicide percentage peaked. We have consistently decreased our rate since then. In our chi-squared test, assuming alpha = 0.05, we have a p-value of 1 > alpha, so we cannot reject the null and thus conclude that there is no correlation.
 
 # **Conclusion:**
 Results thus far match our expectations in some cases, but differ drastically in others. When considering age as a factor, we find that people aged 75 and older peak the rate. The rate then starts to drop as we go further down the age groups. The elderly account for about 12% of the US population, yet we find a peak in this age group. The trend found is that the risk increases with age. With the expectation of suicide rates being higher among males than those in females, the analysis not only proved that, but also showed the vast differences in the numbers. The highest noted percentage difference between males and females is in the year 1995.  We have not found any correlation between gdp per capita and the suicide rate. The generation that peaked the suicide rates was the “Silent” generation (1928 to 1945). This was the generation that was raised during a period of war and economic depression, which can be a strong contributing factor for the rise. 2006 witnessed the most suicides and the rate has since consistently dropped. We also find that amongst the countries, Romania peaked the suicide rate. 
 
 # **References:**
-[1] United Nations Development Program. (2018). Human development index (HDI). Retrieved from http://hdr.undp.org/en/indicators/137506
-[2] World Bank. (2018). World development indicators: GDP (current US$) by country:1985 to 2016. Retrieved from http://databank.worldbank.org/data/source/world-development-indicators#
-[3] [Szamil]. (2017). Suicide in the Twenty-First Century [dataset]. Retrieved from https://www.kaggle.com/szamil/suicide-in-the-twenty-first-century/notebook
-[4] World Health Organization. (2018). Suicide prevention. Retrieved from http://www.who.int/mental_health/suicide-prevention/en/
+[1] who.int/news-room/fact-sheets/detail/suicide
+[2] United Nations Development Program. (2018). Human development index (HDI). Retrieved from http://hdr.undp.org/en/indicators/137506
+[3] World Bank. (2018). World development indicators: GDP (current US$) by country:1985 to 2016. Retrieved from http://databank.worldbank.org/data/source/world-development-indicators#
+[4] [Szamil]. (2017). Suicide in the Twenty-First Century [dataset]. Retrieved from https://www.kaggle.com/szamil/suicide-in-the-twenty-first-century/notebook
+[5] World Health Organization. (2018). Suicide prevention. Retrieved from http://www.who.int/mental_health/suicide-prevention/en/
+
 
