@@ -35,12 +35,21 @@ ggplot(totalDeathsPerAge, aes(x=age, y=Percentage)) +
   geom_bar(stat="identity", width=1, color="white", fill = "light blue") +
   ggtitle("Proportion of deaths/age group since 1987 to 2016") + geom_text(aes(label=Percentage), position=position_dodge(width=0.9), vjust=-0.25)
 
+totalDeathsPerAge = ageAndSuicideRate %>%
+  select(age, TotalSuicideRate) %>%
+  group_by(age) %>%  
+  summarize(TotalDeaths = sum(TotalSuicideRate)) %>%
+  mutate(Percentage = paste(as.character(round(TotalDeaths/sum(TotalDeaths)*100)) ,"%")) %>% 
+  mutate(Affected = TotalDeaths/sum(TotalDeaths)*100) %>%
+  mutate(Unaffected = 100 - Affected) %>%
+  select(Affected, Unaffected)
+
+chisq.test(totalDeathsPerAge)
 ```
-Through observation, one can notice that people aged 75 years or older have the highest suicide rate and the rate decreases as we go down the age groups.
+Through observation, one can notice that people aged 75 years or older have the highest suicide rate and the rate decreases as we go down the age groups. For the chi-square test, we tested whether age and suicide rates are independent. Assuming alpha = 0.05, with a p-value = we cannot reject the null and conclude that there is a correlation between the age and suicide rate.
 
 2. Does sex affect the suicide rate?
 ```{r}
-
 sexAndSuicideRate = data %>%
   select(sex, `suicides/100k pop`, year) %>%
   group_by(sex, year) %>%
@@ -53,9 +62,13 @@ ggplot(data = sexAndSuicideRate) +
     xlab("Year") + 
     ylab("Difference between male and female rates") + 
     ggtitle("Suicide Rate vs Sex") + theme(axis.text.x = element_text(angle = 90, hjust = 1))
-  
+
+sexAndSuicideRate = sexAndSuicideRate %>%
+  select(male, female)
+
+chisq.test(sexAndSuicideRate)
 ```
-It appears that the suicide rate difference amongst men and females is positive. We find that this difference is positive in all cases.
+It appears that the suicide rate difference amongst men and females is positive. We find that this difference is positive in all cases. With a p-value of 1, we reject the null and conclude that there is no correlation between Sex and Suicide Rate.
 
 3. Correlation between GDP and population suicide rates? A follow-up question to that is, does GDP strongly relate to a certain age-group committing suicides?
 ```{r GDP to population suicide rate}
@@ -65,8 +78,13 @@ gdpToSuicideRate = data %>%
 ggplot(data = gdpToSuicideRate, aes(x = `gdp_per_capita ($)`, y = `suicides/100k pop`)) + geom_point() + geom_smooth(method = "lm") + ylab("Suicides per 100 thousand people") + xlab("GDB per capita") + ggtitle("Suicide counts vs GDP per capita")
 
 ggplot(data = gdpToSuicideRate, aes(x = `gdp_per_capita ($)`, y = `suicides/100k pop`)) + geom_point() + facet_wrap(~age) + geom_smooth(method = "lm") + ylab("Suicides per 100 thousand people") + xlab("GDB per capita") + ggtitle("Suicide counts vs GDP per capita separated by age")
+
+gdpToSuicideRate = gdpToSuicideRate %>%
+  select(`suicides/100k pop`)
+
+chisq.test(gdpToSuicideRate)
 ```
-While it appears that there are more cases of suicide when the gdp per capita is low, there is actually no effective correlation between the 2 variables. In terms of age, it seems that the suicide rate increases with age.
+While it appears that there are more cases of suicide when the gdp per capita is low, there is actually no effective correlation between the 2 variables. In terms of age, it seems that the suicide rate increases with age. For the chi-squared test, assuming alpha = 0.05, with a p-value < 2.2 * 10^-16 < alpha, we cannot reject the null and conclude that there is a correlation between gdp and suicide rate.
 
 4. What is the role of generation in the rates we are examining?
 ```{r}
@@ -87,13 +105,23 @@ ggplot(totalDeathsPerGeneration, aes(x=generation, y=Percentage)) +
   geom_bar(stat="identity", width=1, color="white", fill = "light PINK") +
   ggtitle("Proportion of deaths/generation since 1987 to 2016")  + geom_text(aes(label=Percentage), position=position_dodge(width=0.9), vjust=-0.25)
 
+totalDeathsPerGeneration = ageAndSuicideRate %>%
+  select(age, TotalSuicideRate) %>%
+  group_by(age) %>%  
+  summarize(TotalDeaths=sum(TotalSuicideRate)) %>%
+  mutate(Percentage=paste(as.character(round(TotalDeaths/sum(TotalDeaths)*100)) ,"%")) %>% 
+  mutate(Affected=TotalDeaths/sum(TotalDeaths)*100)
 
+totalDeathsPerGeneration = totalDeathsPerGeneration %>%
+  mutate(Unaffected = 100 - Affected) %>%
+  select(Affected, Unaffected)
+
+chisq.test(totalDeathsPerGeneration)
 ```
-As one can notice, the "Silent" generation was the one that saw most number of suicides across the globe. 
+As one can notice, the "Silent" generation was the one that saw most number of suicides across the globe. With a chi-square test, we have a p-value of 5.719 * 10^-07. Assuming alpha = 0.05, we cannot reject the null, and we conclude that there is a correlation between the Suicde rate and generation.
 
 5. Which country has the highest suicide rate, per age group, per generation, and through the years? Can it be related to any factor in specific. Answers may be present in the data or may require additional background research.
 ```{r}
-
 ## suicide rate for countries per age group
 countryAndAge = data %>%
   select(country, `suicides/100k pop`, age) %>%
@@ -138,6 +166,10 @@ populationsByYear = data %>%
   select(year, percent)
 
 ggplot(data = populationsByYear, aes(x = factor(year), y = percent)) + geom_point() + ylab("Percentage of world population affected") + xlab("Year") + ggtitle("Percentage vs. Year")  + theme(axis.text.x = element_text(angle = 90, hjust = 1))
-```
-Examining the world population and suicide rate, it seems that in 2006, the suicide percentage peaked. We have consistently decreased our rate since then.
 
+populationsByYear = populationsByYear %>%
+  select(percent)
+
+chisq.test(populationsByYear)
+```
+Examining the world population and suicide rate, it seems that in 2006, the suicide percentage peaked. We have consistently decreased our rate since then. In our chi-squared test, assuming alpha = 0.05, we have a p-value of 1 > alpha, so we cannot reject the null and thus conclude that there is no correlation.
