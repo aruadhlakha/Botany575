@@ -97,9 +97,9 @@ sexAndSuicideRate = sexAndSuicideRate %>%
 gdpToSuicideRate = data %>%
   select(`suicides/100k pop`, `gdp_per_capita ($)`, age)
 
-ggplot(data = gdpToSuicideRate, aes(x = `gdp_per_capita ($)`, y = `suicides/100k pop`)) + geom_point()  + ylab("Suicides per 100 thousand people") + xlab("GDB per capita") + ggtitle("Suicide counts vs GDP per capita")
+ggplot(data = gdpToSuicideRate, aes(x = `gdp_per_capita ($)`, y = `suicides/100k pop`)) + geom_point()  + ylab("Suicides per 100 thousand people") + xlab("GDP per capita") + ggtitle("Suicide counts vs GDP per capita")
 
-ggplot(data = gdpToSuicideRate, aes(x = `gdp_per_capita ($)`, y = `suicides/100k pop`)) + geom_point() + facet_wrap(~age)  + ylab("Suicides per 100 thousand people") + xlab("GDB per capita") + ggtitle("Suicide counts vs GDP per capita separated by age")
+ggplot(data = gdpToSuicideRate, aes(x = `gdp_per_capita ($)`, y = `suicides/100k pop`)) + geom_point() + facet_wrap(~age)  + ylab("Suicides per 100 thousand people") + xlab("GDP per capita") + ggtitle("Suicide counts vs GDP per capita separated by age")
 
 gdpToSuicideRate = gdpToSuicideRate %>%
   select(`suicides/100k pop`)
@@ -195,7 +195,7 @@ chisq.test(populationsByYear)
 Examining the world population and suicide rate, it seems that in 1995, the suicide percentage peaked. We have consistently decreased our rate since then. In our chi-squared test, assuming alpha = 0.05, we have a p-value of 1 > alpha, so we can reject the null and thus conclude that there is no correlation.
 
 # **Conclusion:**
-Results thus far match our expectations in some cases, but differ drastically in others. When considering age as a factor, we find that people aged 75 and older peak the rate. The rate then starts to drop as we go further down the age groups. The elderly account for about 12% of the US population, yet we find a peak in this age group. The trend found is that the risk increases with age. With the expectation of suicide rates being higher among males than those in females, the analysis not only proved that, but also showed the vast differences in the numbers. The highest noted percentage difference between males and females is in the year 1995.  We have not found any correlation between gdp per capita and the suicide rate. The generation that peaked the suicide rates was the “Silent” generation (1928 to 1945). This was the generation that was raised during a period of war and economic depression, which can be a strong contributing factor for the rise. 2006 witnessed the most suicides and the rate has since consistently dropped. We also find that amongst the countries, Romania peaked the suicide rate. 
+Results thus far match our expectations in some cases, but differ drastically in others. When considering age as a factor, we find that people aged 75 and older peak the rate. The rate then starts to drop as we go further down the age groups. The elderly account for about 12% of the US population, yet we find a peak in this age group. The trend found is that the risk increases with age. With the expectation of suicide rates being higher among males than those in females, the analysis not only proved that, but also showed the vast differences in the numbers. The highest noted percentage difference between males and females is in the year 1995.  Additionally, we have found correlation between gdp per capita and the suicide rate. The generation that peaked the suicide rates was the “Silent” generation (1928 to 1945). This was the generation that was raised during a period of war and economic depression, which can be a strong contributing factor for the rise. 2006 witnessed the most suicides and the rate has since consistently dropped. We also find that amongst the countries, Romania peaked the suicide rate. 
 
 # **References:**
 
