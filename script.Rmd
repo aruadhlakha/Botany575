@@ -101,9 +101,9 @@ sexAndSuicideRate = sexAndSuicideRate %>%
 gdpToSuicideRate = data %>%
   select(`suicides/100k pop`, `gdp_per_capita ($)`, age)
 
-ggplot(data = gdpToSuicideRate, aes(x = `gdp_per_capita ($)`, y = `suicides/100k pop`)) + geom_point()  + ylab("Suicides per 100 thousand people") + xlab("GDP per capita") + ggtitle("Suicide counts vs GDP per capita")
+ggplot(data = gdpToSuicideRate, aes(x = `gdp_per_capita ($)`, y = `suicides/100k pop`)) + geom_point()  + ylab("Suicides per 100 thousand people") + xlab("GDP per capita") + ggtitle("Suicide counts vs GDP per capita") +geom_smooth()
 
-ggplot(data = gdpToSuicideRate, aes(x = `gdp_per_capita ($)`, y = `suicides/100k pop`)) + geom_point() + facet_wrap(~age)  + ylab("Suicides per 100 thousand people") + xlab("GDP per capita") + ggtitle("Suicide counts vs GDP per capita separated by age")
+ggplot(data = gdpToSuicideRate, aes(x = `gdp_per_capita ($)`, y = `suicides/100k pop`)) + geom_point() + facet_wrap(~age)  + ylab("Suicides per 100 thousand people") + xlab("GDP per capita") + ggtitle("Suicide counts vs GDP per capita separated by age") + geom_smooth()
 
 gdpToSuicideRate2 = gdpToSuicideRate %>%
   select(`suicides/100k pop`)
@@ -116,9 +116,9 @@ While it appears that there are more cases of suicide when the gdp per capita is
 For further testing about the relationship between the suicide rates and gdp, we fit a linear model to GDP and suicide rates. Let's see if our results stand [6].
 ```{r}
 library(broom)
-country_mean_gdp <- data %>%
+countryGdp <- data %>%
   group_by(country) %>%
-  summarize(suicide_per_100k = (sum(as.numeric(suicides_no)) / sum(as.numeric(population))) * 100000, 
+  summarize(suicideRate = (sum(as.numeric(suicides_no)) / sum(as.numeric(population))) * 100000, 
             gdp_per_capita = mean(`gdp_per_capita ($)`))
 
 
@@ -128,16 +128,16 @@ country_mean_gdp <- data %>%
 #  group_by(country) %>%
 #  summarize(gdpMean=mean(`gdp_per_capita ($)`), ratesMean=mean(`suicides/100k pop`))
 
-model1 <- lm(suicide_per_100k ~ gdp_per_capita, data = country_mean_gdp)
+model1 <- lm(suicideRate ~ gdp_per_capita, data = countryGdp)
 
 gdp_suicide_no_outliers <- model1 %>%
   augment() %>%
   arrange(desc(.cooksd)) %>%
   filter(.cooksd < 4/nrow(.)) %>% # removes 5/93 countries
-  inner_join(country_mean_gdp, by = c("suicide_per_100k", "gdp_per_capita")) %>%
-  select(country, gdp_per_capita, suicide_per_100k)
+  inner_join(countryGdp, by = c("suicideRate", "gdp_per_capita")) %>%
+  select(country, gdp_per_capita, suicideRate)
 
-model2 <- lm(suicide_per_100k ~ gdp_per_capita, data = gdp_suicide_no_outliers)
+model2 <- lm(suicideRate ~ gdp_per_capita, data = gdp_suicide_no_outliers)
 
 summary(model2)
 ```
